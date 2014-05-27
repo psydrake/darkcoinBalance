@@ -17,7 +17,7 @@
        under the License.
  */
 
-package net.edrake.dogecoinbalancewow;
+package net.edrake.darkcoinbalance;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,7 +32,7 @@ import org.apache.cordova.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class dogecoinBalanceWow extends CordovaActivity {
+public class darkcoinBalance extends CordovaActivity {
 
 	Timer timer;
 
