@@ -10,6 +10,28 @@ Darkcoin Balance consists of two parts:
 
 The front end communicates with the back end via [JSONP](http://en.wikipedia.org/wiki/JSONP) calls. The backend polls cryptocoincharts.info every 10 minutes, and it stores this data in [memcache](https://developers.google.com/appengine/docs/python/memcache/) for all subsequent client requests, in order to reduce load on the CryptoCoinCharts server. Wallet balance lookups from the Darkcoin Blockchain [API](http://explorer.darkcoin.io/chain/DarkCoin/q/) occur on demand.
 
+## Project Structure
+This project is organized to make use of the Cordova command line tools (version 3.1).
+* `www`					- common web assets
+* `merges/android`		- Android specific web assets to override those in `www`
+* `merges/wp8`			- Windows Phone 8 specific web assets to override those in `www`
+* `platforms/android`	- Android specific files
+* `platforms/wp8`		- Windows Phone 8 specific files
+* `webap`				- files for hosted web app (Chrome, Firefox OS)
+* `webapp/chrome`		- metadata files for the Chrome hosted web app, including the manifest and icons
+
+## Building and Running
+I originally wrote this using Apache Cordova 2.9 solely for Android. I later reorganized it to use [Apache Cordova 3.1](http://cordova.apache.org/docs/en/3.1.0/) for multiple Operating Systems, and have been building and running the project using the [Cordova 3.1 CLI](http://cordova.apache.org/docs/en/3.1.0/guide_cli_index.md.html#The%20Command-line%20Interface).
+
+If you don't have Cordova 3.1 installed, follow the [CLI instructions](http://cordova.apache.org/docs/en/3.1.0/guide_cli_index.md.html#The%20Command-line%20Interface). If you have an older version, you can [upgrade](http://cordova.apache.org/blog/releases/2013/10/02/cordova-31.html). If, by the time you read this, there is a newer version of Cordova, you can probably use that :).
+
+I have had success running the project on my physical Android phone. On the command line, within the project directory:
+* Android (plug your phone into your computer) - `cordova run android --verbose`
+
+**UPDATE:** I updated cordova to version 3.5. Here are some issues that I've seen since then:
+* For Android: If you run `cordova build android` and get the error: "platforms/android/ant-build/AndroidManifest.xml:2: error: Error: Float types not allowed (at 'versionCode' with value 'NaN').",
+	run the `./setVersion.sh` script to overwrite the NaN value in that file.
+
 ## Install On Your Device
 * [Android](https://play.google.com/store/apps/details?id=net.edrake.darkcoinbalancewow)
 * [Amazon Kindle Fire](http://www.amazon.com/Drake-Emko-Darkcoin-Balance/dp/B00ISNBWEY)
