@@ -54,7 +54,8 @@ def tradingDRK(currency='BTC'):
 
     mReturn = '{}'
     # All supported currencies besides EUR have a direct trading pair with DRK
-    if (currency not in ['EUR']):
+    # Update: Adding USD to this, b/c DRK_USD trading pair price seems inaccurate
+    if (currency not in ['EUR', 'USD']):
         drkCurrency = json.loads(memcache.get('trading_DRK_' + currency))
         if (not drkCurrency):
             logging.warn('No data found in memcache for trading_DRK_' + currency)
@@ -95,8 +96,9 @@ def pullTradingPair(currency1='DRK', currency2='BTC'):
 def pullCryptocoinchartsData():
     pullTradingPair('DRK', 'BTC')
     pullTradingPair('DRK', 'CNY')
-    pullTradingPair('DRK', 'USD')
+    #pullTradingPair('DRK', 'USD')
     pullTradingPair('BTC', 'EUR')
+    pullTradingPair('BTC', 'USD')
     return "Done"
 
 @bottle.error(404)
