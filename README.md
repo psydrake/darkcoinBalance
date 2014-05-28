@@ -33,12 +33,12 @@ I have had success running the project on my physical Android phone. On the comm
 	run the `./setVersion.sh` script to overwrite the NaN value in that file.
 
 ## Install On Your Device
-* [Android](https://play.google.com/store/apps/details?id=net.edrake.darkcoinbalancewow)
+* [Android](https://play.google.com/store/apps/details?id=net.edrake.darkcoinbalance)
 * [Amazon Kindle Fire](http://www.amazon.com/Drake-Emko-Darkcoin-Balance/dp/B00ISNBWEY)
 * [Windows Phone](http://www.windowsphone.com/en-us/store/app/darkcoin-balance/9e343cb7-3552-4f7f-9d88-0a0d87c05848)
 * [Blackberry 10](http://appworld.blackberry.com/webstore/content/53031888/)
 * [FirefoxOS](https://marketplace.firefox.com/app/darkcoin-balance)
-* [Chrome Web Store](https://chrome.google.com/webstore/detail/darkcoin-balance/mbldbbdmcmpelfakglhfafgiopeepnob)
+* [Chrome Web Store](https://chrome.google.com/webstore/detail/darkcoin-balance/klokkomogkjjijjhgloehmhkaogbdioj)
 * [Browse As A Web Site](http://d2a4gw4qtrw231.cloudfront.net/main.html)
 
 ## Author
