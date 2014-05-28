@@ -4,7 +4,7 @@
 			<span class="text-muted">Total balance:</span> <span class="balance">{{data.total | number:4}}</span> DRK
 		</div>
 		<div class="span12">
-			<span class="text-muted">That's about </span><span class="balance">{{currencySymbol(data.currency)}}{{data.convertedTotal | number:4}}</span> {{data.currency}} <span ng-show="data.convertedTotal" class="text-muted">(such {{data.suchWord}})!</span>
+			<span class="text-muted">That's about </span><span class="balance">{{currencySymbol(data.currency)}}{{data.convertedTotal | number:4}}</span> {{data.currency}}
 		</div>
 	</div>
     <div class="row-fluid">

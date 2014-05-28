@@ -95,7 +95,6 @@ angular.module('app.controllers', []).
 			convertedTotal: 0, 
 			currency: settingsService.getValue('preferredCurrency'),
 			wallets: settingsService.getObject('wallets'),
-			suchWord: utilService.getSuchWord(),
 			loadCount: 0,
 			price: 0, // current price in selected non-DRK currency
 			btcPrice: 0 // current price in BTC

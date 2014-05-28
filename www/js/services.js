@@ -77,12 +77,6 @@ angular.module('app.services', []).
 				return 0; // all is good
 			},
 
-			getSuchWord: function() {
-				var suchWords = ['coin', 'richs', 'wow', 'many'];
-				var suchWord = suchWords[Math.floor(Math.random() * suchWords.length)];
-				return suchWord;
-			},
-
 			getAppVersion: function() {
 				return '1.0.1'; // version
 			}
