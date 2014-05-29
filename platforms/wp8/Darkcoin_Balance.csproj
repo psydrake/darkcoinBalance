@@ -9,8 +9,8 @@
         <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>net.edrake.dogecoinbalancewow</RootNamespace>
-        <AssemblyName>net.edrake.dogecoinbalancewow</AssemblyName>
+        <RootNamespace>net.edrake.darkcoinbalance</RootNamespace>
+        <AssemblyName>net.edrake.darkcoinbalance</AssemblyName>
         <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
         <SilverlightVersion>
         </SilverlightVersion>
@@ -21,9 +21,9 @@
         <SupportedCultures>en-US</SupportedCultures>
         <XapOutputs>true</XapOutputs>
         <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
-        <XapFilename>net.edrake.dogecoinbalancewow.xap</XapFilename>
+        <XapFilename>net.edrake.darkcoinbalance.xap</XapFilename>
         <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
-        <SilverlightAppEntry>net.edrake.dogecoinbalancewow.App</SilverlightAppEntry>
+        <SilverlightAppEntry>net.edrake.darkcoinbalance.App</SilverlightAppEntry>
         <ValidateXaml>true</ValidateXaml>
         <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
         <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
@@ -261,13 +261,13 @@
         <Content Include="www\img\bg_192.png" />
     </ItemGroup>
     <ItemGroup>
-        <Content Include="www\img\dogecoinBalanceWow_128.png" />
+        <Content Include="www\img\darkcoinbalance_128.png" />
     </ItemGroup>
     <ItemGroup>
-        <Content Include="www\img\Dogecoin_128.png" />
+        <Content Include="www\img\darkcoin_128.png" />
     </ItemGroup>
     <ItemGroup>
-        <Content Include="www\img\Dogecoin_32.png" />
+        <Content Include="www\img\darkcoin_32.png" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="www\img\logo.png" />

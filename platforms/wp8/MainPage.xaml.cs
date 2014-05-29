@@ -33,7 +33,7 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using System.Windows.Resources;
 
-namespace net.edrake.dogecoinbalancewow
+namespace net.edrake.darkcoinbalance
 {
     public partial class MainPage : PhoneApplicationPage
     {
