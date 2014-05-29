@@ -258,13 +258,10 @@
         <Content Include="www\favicon.ico" />
     </ItemGroup>
     <ItemGroup>
-        <Content Include="www\img\bg_192.png" />
+        <Content Include="www\img\bg-192.png" />
     </ItemGroup>
     <ItemGroup>
-        <Content Include="www\img\darkcoinbalance_128.png" />
-    </ItemGroup>
-    <ItemGroup>
-        <Content Include="www\img\darkcoin_128.png" />
+        <Content Include="www\img\darkcoinBalance128x128.png" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="www\img\darkcoin_32.png" />
