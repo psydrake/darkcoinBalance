@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="net.edrake.dogecoinbalancewow" version="1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="net.edrake.darkcoinbalance" version="1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <feature name="InAppBrowser">
         <param name="wp-package" value="InAppBrowser" />
     </feature>
-    <name>Dogecoin Balance Wow</name>
+    <name>Darkcoin Balance</name>
     <description>
-		See how many Dogecoin you own and how much they're worth. Such richs!
+		See how many Darkcoin you own and what they're worth.
     </description>
     <author email="drakee@gmail.com" href="https://github.com/psydrake">
         Drake Emko
