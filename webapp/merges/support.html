@@ -15,6 +15,15 @@
 	  color: #003399
   }
 
+  ul {
+	  list-style-type: square;
+  }
+
+  code, pre {
+	  background-color: #b0c4de;
+	  font-weight: 700;
+  }
+
   .logo {
 	float: left;
 	padding: 15px;
@@ -44,7 +53,47 @@
 		If you are experiencing any issues, such as a crash, please let me know anything you can about your device - for example "I'm using a Samsung Galaxy S III phone running Android 4.1.2" or "I'm using an iPhone 5S running iOS7". I appreciate everyone's feedback.
 	</p>
 </div>
-<div class="clear">
+<div class="clear" id="FAQ">
+	<h2>FAQ</h2>
+	<ul>
+		<li id="FAQ_why_does_my_balance"><p><strong>Why does my balance in Darkcoin Balance look lower than the balance shown in my wallet?</strong></p>
+			<p>
+			<strong>Darkcoin Balance</strong> examines the literal addresses you enter and reports the balances from the <a href="http://explorer.darkcoin.io/chain/DarkCoin/">blockchain explorer</a>. However, I have found that if I send coins from my QT wallet to another address, the wallet can generate a new internal address that it somehow shuffles coins into, around the same time that it sends the coins to the external address.
+			</p>
+			<p>
+			Basically this means that if your balance in <strong>Darkcoin Balance</strong> looks off, it is probably because some of your balance has been moved to a hidden address in your wallet, in my experience as a result of an attempted send transaction.
+			</p>
+			<p>
+			You can find the hidden address(es) by following these instructions for the QT wallet:
+			<ol>
+				<li>Go to <code>Help -> Debug Wallet</code> in the Wallet menu</li>
+				<li>Click on the <code>Console</code> tab</li>
+				<li>There should be a command prompt at the bottom of the window. Enter:
+					<code>listaddressgroupings</code> and press <code>RETURN</code>
+				</li>
+				<li>
+					It should give you a list of addresses and balances - for example:
+					<pre>
+	[
+		[
+			["XrXLBfbmGSLoU1biw7nnqbdyziJ9GSxV5A", 10.91900000],
+			["Xxxas33JP8ri2G1TeAGNymqWvfYr1eY7aY", 1.79535900, "Purchases"]
+		],
+		[
+			["XfXsE4mmjFCfZ1gAcP8vLsjdYDucNTEAnE", 0.92520266, "Mining"]
+		]
+	]
+					</pre>
+					Notice that there is an address, <code>XrXLBfbmGSLoU1biw7nnqbdyziJ9GSxV5A</code> in this case (yours will be different), that was created by the wallet without a label - probably during a send operation.
+				</li>
+				<li>Add that address into the <strong>Darkcoin Balance</strong> app. The balance shown should now match that shown in your Darkcoin QT wallet.</li>
+			</ol>
+			</p>
+			<p>Because of this wallet behavior, I've found it more practical to use <strong>Darkcoin Balance</strong> with addresses from a wallet from which I don't do a lot of sending - e.g. the wallet that holds my mining address from a mining pool, or a buy-and-hold address that I use to withdraw from a currency exchange - as opposed to a wallet from which I'm doing active sending of funds.</p>
+		</li>
+	</ul>
+</div>
+<div>
 	<img src="img/darkcoin-192.png" class="logo" alt="Darkcoin logo" title="Darkcoin"/>
 	<h2>What is Darkcoin?</h2>
 	<p>
