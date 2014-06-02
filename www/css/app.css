@@ -238,3 +238,23 @@ body {
 .fine-print {
 	font-size: smaller;
 }
+
+/* Media queries for different screen sizes */
+@media screen and (max-width: 640px){
+    .table-balances input {
+		width: 340px;
+	}
+}
+
+@media screen and (max-width: 480px){
+    .table-balances input {
+		width: 270px;
+	}
+}
+
+@media screen and (max-width: 400px){
+    .table-balances input {
+		width: 220px;
+	}
+}
+
