@@ -1,5 +1,5 @@
 {
-  "version": "1.0.3",
+  "version": "1.0.4",
   "name": "Darkcoin Balance",
   "description": "See how many Darkcoin you own and what they’re worth.",
   "launch_path": "/main.html",
