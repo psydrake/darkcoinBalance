@@ -250,10 +250,24 @@ body {
     .table-balances input {
 		width: 270px;
 	}
+
+	.walletAddress {
+		font-size: small;
+	}
 }
 
 @media screen and (max-width: 400px){
     .table-balances input {
 		width: 220px;
+	}
+
+	.walletAddress {
+		font-size: x-small;
+	}
+}
+
+@Media screen and (max-width: 380px){
+    .table-balances input {
+		width: 186px;
 	}
 }
