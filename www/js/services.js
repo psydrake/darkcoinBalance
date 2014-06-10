@@ -175,12 +175,12 @@ angular.module('app.services', []).
 							}).error(function(data, status, headers, config) {
 								$log.warn('error! data:', data, ', status:', status, ', headers:', headers, ', config:', config);
 								fn(0, 0, 0, true); 
-							});;
+							});
 						}
 					}).error(function(data, status, headers, config) {
 						$log.warn('error! data:', data, ', status:', status, ', headers:', headers, ', config:', config);
 						fn(0, 0, 0, true); 
-					});;
+					});
                 }
             };
         }
