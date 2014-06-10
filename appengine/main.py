@@ -51,8 +51,8 @@ def getBalance(address=''):
 @bottle.route('/api/trading-drk/<currency:re:[A-Z][A-Z][A-Z]>')
 def tradingDRK(currency='BTC'):
     response.content_type = 'application/json; charset=utf-8'
-
     mReturn = '{}'
+
     # All supported currencies besides EUR have a direct trading pair with DRK
     # Update: Adding USD to this, b/c DRK_USD trading pair price seems inaccurate
     if (currency not in ['EUR', 'USD']):
@@ -63,7 +63,7 @@ def tradingDRK(currency='BTC'):
         else:
             mReturn = drkCurrency['price']
     else:
-        # For EUR, We have to convert from DRK -> BTC -> EUR
+        # For EUR and USD we have to convert from DRK -> BTC -> EUR / USD
         drkBtc = json.loads(memcache.get('trading_DRK_BTC'))
         if (not drkBtc):
             logging.warn("No data found in memcache for trading_DRK_BTC")
@@ -95,8 +95,8 @@ def pullTradingPair(currency1='DRK', currency2='BTC'):
 @bottle.route('/tasks/pull-cryptocoincharts-data')
 def pullCryptocoinchartsData():
     pullTradingPair('DRK', 'BTC')
+    pullTradingPair('DRK', 'LTC')
     pullTradingPair('DRK', 'CNY')
-    #pullTradingPair('DRK', 'USD')
     pullTradingPair('BTC', 'EUR')
     pullTradingPair('BTC', 'USD')
     return "Done"

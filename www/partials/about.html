@@ -2,7 +2,8 @@
 	<h3>Darkcoin Balance</h3>
 
 	<div class="row-fluid">
-		<img src="img/darkcoinBalance128x128.png" alt="Darkcoin Balance" />
+		<img ng-show="showLogo1" src="img/darkcoinBalance128x128.png" alt="Darkcoin Balance" title="Darkcoin Balance" class="aboutLogo"/>
+		<img ng-hide="showLogo1" src="img/darkcoinlogo128.png" alt="Darkcoin Logo" title="Darkcoin (DRK)" class="aboutLogo"/>
 		<p>See how many Darkcoin you own and what they're worth.</p>
 		<p>Version {{data.version}}</p>
 		<p>By Drake Emko</p>
