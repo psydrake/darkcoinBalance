@@ -13,7 +13,7 @@ tmp
 **/bin/*
 platforms/android/assets/www
 platforms/android/ant-build/AndroidManifest.xml
-platforms/android/CordovaLib/ant-build/build.prop
+platforms/android/CordovaLib/ant-build/*.prop
 platforms/wp8/www/
 platforms/wp8/Bin
 console.log
