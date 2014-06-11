@@ -14,8 +14,9 @@ from decimal import *
 from server.controllers import RESOURCE_NAME_controller
 
 BLOCKEXPLORER_URL = 'http://explorer.darkcoin.io/chain/DarkCoin/q/addressbalance/'
+BLOCKEXPLORER_URL_BACKUP = 'http://chainz.cryptoid.info/drk/api.dws?q=getbalance&a='
 TRADING_PAIR_URL = 'http://www.cryptocoincharts.info/v2/api/tradingPair/'
-TIMEOUT_DEADLINE = 30 # seconds
+TIMEOUT_DEADLINE = 10 # seconds
 
 # Run the Bottle wsgi application. We don't need to call run() since our
 # application is embedded within an App Engine WSGI application server.
@@ -34,11 +35,29 @@ def home():
 def getBalance(address=''):
     response.content_type = 'application/json; charset=utf-8'
 
-    data = urlfetch.fetch(BLOCKEXPLORER_URL + address, deadline=TIMEOUT_DEADLINE)
+    url = BLOCKEXPLORER_URL + address
+    data = None
+    useBackupUrl = True
+
+    try:
+        data = urlfetch.fetch(url, deadline=TIMEOUT_DEADLINE)
+        logging.info('status code: ' + data.status_code)
+        if (not data or not data.content):
+            logging.warn('No content returned from ' + url)
+            useBackupUrl = True
+    except:
+        logging.warn('Error retrieving ' + url + ' - status code: ' + str(data.status_code))
+        useBackupUrl = True
+
+    if (useBackupUrl):
+        backupUrl = BLOCKEXPLORER_URL_BACKUP + address
+        logging.warn('Now trying ' + backupUrl)
+        data = urlfetch.fetch(backupUrl, deadline=TIMEOUT_DEADLINE)
+
     dataDict = json.loads(data.content)
     balance = json.dumps(dataDict)
-
     mReturn = balance
+
     query = request.query.decode()
     if (len(query) > 0):
         mReturn = query['callback'] + '({balance:' + balance + '})'
