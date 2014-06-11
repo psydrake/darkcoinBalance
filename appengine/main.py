@@ -37,7 +37,7 @@ def getBalance(address=''):
 
     url = BLOCKEXPLORER_URL + address
     data = None
-    useBackupUrl = True
+    useBackupUrl = False
 
     try:
         data = urlfetch.fetch(url, deadline=TIMEOUT_DEADLINE)
