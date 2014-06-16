@@ -16,6 +16,10 @@ from server.controllers import RESOURCE_NAME_controller
 BLOCKEXPLORER_URL = 'http://explorer.darkcoin.io/chain/DarkCoin/q/addressbalance/'
 BLOCKEXPLORER_URL_BACKUP = 'http://chainz.cryptoid.info/drk/api.dws?q=getbalance&a='
 TRADING_PAIR_URL = 'http://www.cryptocoincharts.info/v2/api/tradingPair/'
+TRADING_PAIR_URL_BTC_BACKUP="https://api.mintpal.com/v1/market/stats/DRK/" # also used for LTC
+TRADING_PAIR_URL_USD_BACKUP = 'https://coinbase.com/api/v1/prices/buy' 
+# TRADING_PAIR_URL_FIAT_BACKUP = 'http://api.bitcoincharts.com/v1/markets.json'
+
 TIMEOUT_DEADLINE = 10 # seconds
 
 # Run the Bottle wsgi application. We don't need to call run() since our
@@ -103,10 +107,45 @@ def tradingDRK(currency='BTC'):
     return str(mReturn)
 
 def pullTradingPair(currency1='DRK', currency2='BTC'):
-    data = urlfetch.fetch(TRADING_PAIR_URL + currency1 + '_' + currency2, deadline=TIMEOUT_DEADLINE)
-    dataDict = json.loads(data.content)
+    url = TRADING_PAIR_URL + currency1 + '_' + currency2
+    data = None
+    useBackupUrl = False
 
-    tradingData = json.dumps(dataDict)
+    try:
+        data = urlfetch.fetch(url, deadline=TIMEOUT_DEADLINE)
+        if (not data or not data.content or data.status_code != 200):
+            logging.warn('No content returned from ' + url)
+            useBackupUrl = True
+    except:
+        logging.warn('Error retrieving ' + url)
+        useBackupUrl = True
+
+    if (useBackupUrl):
+        if (currency1 == 'DRK' and currency2 in ['BTC', 'LTC']):
+            backupUrl = TRADING_PAIR_URL_BTC_BACKUP + currency2
+            logging.warn('Now trying ' + backupUrl)
+            data = urlfetch.fetch(backupUrl, deadline=TIMEOUT_DEADLINE)
+        elif (currency1 == 'BTC' and currency2 == 'USD'):
+            backupUrl = TRADING_PAIR_URL_USD_BACKUP
+            logging.warn('Now trying ' + backupUrl)
+            data = urlfetch.fetch(backupUrl, deadline=TIMEOUT_DEADLINE)
+        else:
+            logger.error('Cannot get trading pair for ' + currency1 + ' / ' + currency2)
+            return
+
+    dataDict = json.loads(data.content)
+    if (useBackupUrl):
+        if (currency1 == 'DRK' and currency2 in ['BTC', 'LTC']):
+            dataDict = {'price': dataDict[0]['last_price']}
+        elif (currency1 == 'BTC' and currency2 == 'USD'):
+            if (dataDict['subtotal']['currency'] == 'USD'):
+                dataDict = {'price': dataDict['subtotal']['amount']}
+            else:
+                logger.error('Unexpected JSON returned from URL ' + TRADING_PAIR_URL_USD_BACKUP)
+        else:
+            logger.error('Should never get here')
+
+    tradingData = json.dumps(dataDict).strip('"')
     memcache.set('trading_' + currency1 + '_' + currency2, tradingData)
     logging.info('Stored in memcache for key trading_' + currency1 + '_' + currency2 + ': ' + tradingData)
 
@@ -114,9 +153,9 @@ def pullTradingPair(currency1='DRK', currency2='BTC'):
 def pullCryptocoinchartsData():
     pullTradingPair('DRK', 'BTC')
     pullTradingPair('DRK', 'LTC')
+    pullTradingPair('BTC', 'USD')
     pullTradingPair('DRK', 'CNY')
     pullTradingPair('BTC', 'EUR')
-    pullTradingPair('BTC', 'USD')
     return "Done"
 
 @bottle.error(404)
