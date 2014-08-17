@@ -19,8 +19,9 @@ TRADING_PAIR_URL = 'http://www.cryptocoincharts.info/v2/api/tradingPair/'
 TRADING_PAIR_URL_BTC_BACKUP="https://api.mintpal.com/v1/market/stats/DRK/" # also used for LTC
 TRADING_PAIR_URL_USD_BACKUP = 'https://coinbase.com/api/v1/prices/buy' 
 # TRADING_PAIR_URL_FIAT_BACKUP = 'http://api.bitcoincharts.com/v1/markets.json'
+BTCAVERAGE_URL = 'https://api.bitcoinaverage.com/ticker/' # used for BTC / GBP, AUD
 
-TIMEOUT_DEADLINE = 10 # seconds
+TIMEOUT_DEADLINE = 12 # seconds
 
 # Run the Bottle wsgi application. We don't need to call run() since our
 # application is embedded within an App Engine WSGI application server.
@@ -77,7 +78,7 @@ def tradingDRK(currency='BTC'):
 
     # All supported currencies besides EUR have a direct trading pair with DRK
     # Update: Adding USD to this, b/c DRK_USD trading pair price seems inaccurate
-    if (currency not in ['EUR', 'USD']):
+    if (currency not in ['EUR', 'USD', 'GBP', 'AUD']):
         drkCurrency = json.loads(memcache.get('trading_DRK_' + currency))
         if (not drkCurrency):
             logging.warn('No data found in memcache for trading_DRK_' + currency)
@@ -107,7 +108,7 @@ def tradingDRK(currency='BTC'):
     return str(mReturn)
 
 def pullTradingPair(currency1='DRK', currency2='BTC'):
-    url = TRADING_PAIR_URL + currency1 + '_' + currency2
+    url = BTCAVERAGE_URL + currency2 + '/' if currency2 in ['AUD', 'GBP'] else TRADING_PAIR_URL + currency1 + '_' + currency2
     data = None
     useBackupUrl = False
 
@@ -134,6 +135,10 @@ def pullTradingPair(currency1='DRK', currency2='BTC'):
             return
 
     dataDict = json.loads(data.content)
+    if (currency1 == 'BTC' and currency2 in ['AUD', 'GBP']):
+        # standardize format of exchange rate data from different APIs (we will use 'price' as a key)
+        dataDict['price'] = dataDict['last'] 
+
     if (useBackupUrl):
         if (currency1 == 'DRK' and currency2 in ['BTC', 'LTC']):
             dataDict = {'price': dataDict[0]['last_price']}
@@ -143,7 +148,7 @@ def pullTradingPair(currency1='DRK', currency2='BTC'):
             else:
                 logger.error('Unexpected JSON returned from URL ' + TRADING_PAIR_URL_USD_BACKUP)
         else:
-            logger.error('Should never get here')
+            logger.error('Error loading trading pair from ' + url)
 
     tradingData = json.dumps(dataDict).strip('"')
     memcache.set('trading_' + currency1 + '_' + currency2, tradingData)
@@ -153,9 +158,11 @@ def pullTradingPair(currency1='DRK', currency2='BTC'):
 def pullCryptocoinchartsData():
     pullTradingPair('DRK', 'BTC')
     pullTradingPair('DRK', 'LTC')
-    pullTradingPair('BTC', 'USD')
     pullTradingPair('DRK', 'CNY')
+    pullTradingPair('BTC', 'USD')
     pullTradingPair('BTC', 'EUR')
+    pullTradingPair('BTC', 'GBP')
+    pullTradingPair('BTC', 'AUD')
     return "Done"
 
 @bottle.error(404)
