@@ -86,7 +86,7 @@ def tradingDRK(currency='BTC'):
         else:
             mReturn = drkCurrency['price']
     else:
-        # For EUR and USD we have to convert from DRK -> BTC -> EUR / USD
+        # For EUR, GBP, and USD we have to convert from DRK -> BTC -> FIAT
         drkBtc = json.loads(memcache.get('trading_DRK_BTC'))
         if (not drkBtc):
             logging.warn("No data found in memcache for trading_DRK_BTC")
