@@ -162,7 +162,7 @@ def pullCryptocoinchartsData():
     pullTradingPair('BTC', 'USD')
     pullTradingPair('BTC', 'EUR')
     pullTradingPair('BTC', 'GBP')
-    pullTradingPair('BTC', 'AUD')
+    #pullTradingPair('BTC', 'AUD')
     return "Done"
 
 @bottle.error(404)
