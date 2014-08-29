@@ -13,7 +13,9 @@ from decimal import *
 # TODO: name and list your controllers here so their routes become accessible.
 from server.controllers import RESOURCE_NAME_controller
 
-BLOCKEXPLORER_URL = 'http://explorer.darkcoin.io/chain/DarkCoin/q/addressbalance/'
+# Main block explorer URL no longer works 8/28/2014
+#BLOCKEXPLORER_URL = 'http://explorer.darkcoin.io/chain/DarkCoin/q/addressbalance/'
+BLOCKEXPLORER_URL = 'http://chainz.cryptoid.info/drk/api.dws?q=getbalance&a='
 BLOCKEXPLORER_URL_BACKUP = 'http://chainz.cryptoid.info/drk/api.dws?q=getbalance&a='
 TRADING_PAIR_URL = 'http://www.cryptocoincharts.info/v2/api/tradingPair/'
 TRADING_PAIR_URL_BTC_BACKUP="https://api.mintpal.com/v1/market/stats/DRK/" # also used for LTC
