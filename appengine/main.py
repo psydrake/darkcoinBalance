@@ -20,7 +20,7 @@ TRADING_PAIR_URL = 'http://www.cryptocoincharts.info/v2/api/tradingPair/'
 TRADING_PAIR_URL_BTC_BACKUP="https://api.mintpal.com/v1/market/stats/DRK/" # also used for LTC
 TRADING_PAIR_URL_USD_BACKUP = 'https://coinbase.com/api/v1/prices/buy' 
 # TRADING_PAIR_URL_FIAT_BACKUP = 'http://api.bitcoincharts.com/v1/markets.json'
-BTCAVERAGE_URL = 'https://api.bitcoinaverage.com/ticker/' # used for BTC / GBP, AUD
+BTCAVERAGE_URL = 'https://api.bitcoinaverage.com/ticker/' # used for BTC / (CNY, EUR, GBP, AUD)
 
 TIMEOUT_DEADLINE = 12 # seconds
 
@@ -79,7 +79,7 @@ def tradingDRK(currency='BTC'):
 
     # All supported currencies besides EUR have a direct trading pair with DRK
     # Update: Adding USD to this, b/c DRK_USD trading pair price seems inaccurate
-    if (currency not in ['EUR', 'USD', 'GBP', 'AUD']):
+    if (currency not in ['EUR', 'USD', 'GBP', 'CNY', 'AUD']):
         drkCurrency = json.loads(memcache.get('trading_DRK_' + currency))
         if (not drkCurrency):
             logging.warn('No data found in memcache for trading_DRK_' + currency)
@@ -87,7 +87,7 @@ def tradingDRK(currency='BTC'):
         else:
             mReturn = drkCurrency['price']
     else:
-        # For EUR, GBP, and USD we have to convert from DRK -> BTC -> FIAT
+        # For EUR, CNY, GBP, and USD we have to convert from DRK -> BTC -> FIAT
         drkBtc = json.loads(memcache.get('trading_DRK_BTC'))
         if (not drkBtc):
             logging.warn("No data found in memcache for trading_DRK_BTC")
@@ -109,7 +109,7 @@ def tradingDRK(currency='BTC'):
     return str(mReturn)
 
 def pullTradingPair(currency1='DRK', currency2='BTC'):
-    url = BTCAVERAGE_URL + currency2 + '/' if currency2 in ['AUD', 'GBP'] else TRADING_PAIR_URL + currency1 + '_' + currency2
+    url = BTCAVERAGE_URL + currency2 + '/' if currency2 in ['AUD', 'CNY', 'GBP', 'EUR'] else TRADING_PAIR_URL + currency1 + '_' + currency2
     data = None
     useBackupUrl = False
 
@@ -136,7 +136,7 @@ def pullTradingPair(currency1='DRK', currency2='BTC'):
             return
 
     dataDict = json.loads(data.content)
-    if (currency1 == 'BTC' and currency2 in ['AUD', 'GBP']):
+    if (currency1 == 'BTC' and currency2 in ['AUD', 'CNY', 'EUR', 'GBP']):
         # standardize format of exchange rate data from different APIs (we will use 'price' as a key)
         dataDict['price'] = dataDict['last'] 
 
@@ -159,7 +159,7 @@ def pullTradingPair(currency1='DRK', currency2='BTC'):
 def pullCryptocoinchartsData():
     pullTradingPair('DRK', 'BTC')
     pullTradingPair('DRK', 'LTC')
-    pullTradingPair('DRK', 'CNY')
+    pullTradingPair('BTC', 'CNY')
     pullTradingPair('BTC', 'USD')
     pullTradingPair('BTC', 'EUR')
     pullTradingPair('BTC', 'GBP')
