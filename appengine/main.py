@@ -109,7 +109,9 @@ def tradingDRK(currency='BTC'):
     return str(mReturn)
 
 def pullTradingPair(currency1='DRK', currency2='BTC'):
-    url = BTCAVERAGE_URL + currency2 + '/' if currency2 in ['AUD', 'CNY', 'GBP', 'EUR'] else TRADING_PAIR_URL + currency1 + '_' + currency2
+    # temporarily commenting out TRADING_PAIR_URL (cryptocoincharts.info) url, since they apparently changed their API
+    # relying on backup URLs
+    url = BTCAVERAGE_URL + currency2 + '/' if currency2 in ['AUD', 'CNY', 'GBP', 'EUR'] else '' #TRADING_PAIR_URL + currency1 + '_' + currency2
     data = None
     useBackupUrl = False
 
@@ -132,7 +134,7 @@ def pullTradingPair(currency1='DRK', currency2='BTC'):
             logging.warn('Now trying ' + backupUrl)
             data = urlfetch.fetch(backupUrl, deadline=TIMEOUT_DEADLINE)
         else:
-            logger.error('Cannot get trading pair for ' + currency1 + ' / ' + currency2)
+            logging.error('Cannot get trading pair for ' + currency1 + ' / ' + currency2)
             return
 
     dataDict = json.loads(data.content)
@@ -147,9 +149,9 @@ def pullTradingPair(currency1='DRK', currency2='BTC'):
             if (dataDict['subtotal']['currency'] == 'USD'):
                 dataDict = {'price': dataDict['subtotal']['amount']}
             else:
-                logger.error('Unexpected JSON returned from URL ' + TRADING_PAIR_URL_USD_BACKUP)
+                logging.error('Unexpected JSON returned from URL ' + TRADING_PAIR_URL_USD_BACKUP)
         else:
-            logger.error('Error loading trading pair from ' + url)
+            logging.error('Error loading trading pair from ' + url)
 
     tradingData = json.dumps(dataDict).strip('"')
     memcache.set('trading_' + currency1 + '_' + currency2, tradingData)
