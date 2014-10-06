@@ -1,7 +1,7 @@
 {
   "name": "Darkcoin Balance",
   "description": "See how many Darkcoin you own and what they’re worth.",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "manifest_version": 2,
   "icons": { "16": "darkcoinBalance16x16.png", "128": "darkcoinBalance128x128.png" },
   "app": {
