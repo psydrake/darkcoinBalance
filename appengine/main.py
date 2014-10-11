@@ -24,7 +24,7 @@ TRADING_PAIR_URL_USD_BACKUP = 'https://coinbase.com/api/v1/prices/buy'
 # TRADING_PAIR_URL_FIAT_BACKUP = 'http://api.bitcoincharts.com/v1/markets.json'
 BTCAVERAGE_URL = 'https://api.bitcoinaverage.com/ticker/' # used for BTC / (CNY, EUR, GBP, AUD)
 
-TIMEOUT_DEADLINE = 12 # seconds
+TIMEOUT_DEADLINE = 10 # seconds
 
 # Run the Bottle wsgi application. We don't need to call run() since our
 # application is embedded within an App Engine WSGI application server.
