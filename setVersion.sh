@@ -17,6 +17,8 @@ perl -pi -e "s/return\s\'\d+\.\d+\.\d+\'\;/return\ \'${VERSION}\.${VERSION_CODE}
 if [ -e "platforms/android/ant-build/AndroidManifest.xml" ]; then
 	perl -pi -e "s/android\:versionCode=\"\NaN\"/android\:versionCode=\"${VERSION_CODE}\"/" platforms/android/ant-build/AndroidManifest.xml
 fi
+perl -pi -e "s/android\:versionCode=\"\d+\"/android\:versionCode=\"${VERSION_CODE}\"/" platforms/android/bin/AndroidManifest.xml
+perl -pi -e "s/android\:versionName=\"\d+\.\d+\"/android\:versionName=\"${VERSION}\"/" platforms/android/bin/AndroidManifest.xml
 perl -pi -e "s/android\:versionCode=\"\NaN\"/android\:versionCode=\"${VERSION_CODE}\"/" platforms/android/AndroidManifest.xml
 perl -pi -e "s/android\:versionCode=\"\d+\"/android\:versionCode=\"${VERSION_CODE}\"/" platforms/android/AndroidManifest.xml
 perl -pi -e "s/version\=\"\d+.\d+\"/version\=\"${VERSION}\"/" platforms/android/cordova/defaults.xml
