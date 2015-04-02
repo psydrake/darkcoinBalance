@@ -73,27 +73,30 @@ def getBalance(address=''):
     logging.info("getBalance(" + address + "): " + mReturn)
     return mReturn
 
+@bottle.route('/api/trading-dash')
+@bottle.route('/api/trading-dash/')
+@bottle.route('/api/trading-dash/<currency:re:[A-Z][A-Z][A-Z]>')
 @bottle.route('/api/trading-drk')
 @bottle.route('/api/trading-drk/')
 @bottle.route('/api/trading-drk/<currency:re:[A-Z][A-Z][A-Z]>')
-def tradingDRK(currency='BTC'):
+def tradingDASH(currency='BTC'):
     response.content_type = 'application/json; charset=utf-8'
     mReturn = '{}'
 
-    # All supported currencies besides EUR have a direct trading pair with DRK
+    # All supported currencies besides EUR have a direct trading pair with DASH
     # Update: Adding USD to this, b/c DRK_USD trading pair price seems inaccurate
     if (currency not in ['EUR', 'USD', 'GBP', 'CNY', 'AUD']):
-        drkCurrency = json.loads(memcache.get('trading_DRK_' + currency))
-        if (not drkCurrency):
-            logging.warn('No data found in memcache for trading_DRK_' + currency)
+        dashCurrency = json.loads(memcache.get('trading_DASH_' + currency))
+        if (not dashCurrency):
+            logging.warn('No data found in memcache for trading_DASH_' + currency)
             return mReturn
         else:
-            mReturn = drkCurrency['price']
+            mReturn = dashCurrency['price']
     else:
-        # For EUR, CNY, GBP, and USD we have to convert from DRK -> BTC -> FIAT
-        drkBtc = json.loads(memcache.get('trading_DRK_BTC'))
-        if (not drkBtc):
-            logging.warn("No data found in memcache for trading_DRK_BTC")
+        # For EUR, CNY, GBP, and USD we have to convert from DASH -> BTC -> FIAT
+        dashBtc = json.loads(memcache.get('trading_DASH_BTC'))
+        if (not dashBtc):
+            logging.warn("No data found in memcache for trading_DASH_BTC")
             return mReturn
 
         btcCurrency = json.loads(memcache.get('trading_BTC_' + currency))
@@ -101,19 +104,19 @@ def tradingDRK(currency='BTC'):
             logging.warn("No data found in memcache for trading_BTC_" + currency)
             return mReturn
 
-        logging.info('drkBtc: ' + str(drkBtc) + ', btcCurrency: ' + str(btcCurrency))
-        mReturn = Decimal(drkBtc['price']) * Decimal(btcCurrency['price'])
+        logging.info('dashBtc: ' + str(dashBtc) + ', btcCurrency: ' + str(btcCurrency))
+        mReturn = Decimal(dashBtc['price']) * Decimal(btcCurrency['price'])
 
     query = request.query.decode()
     if (len(query) > 0):
         mReturn = query['callback'] + '({price:' + str(mReturn) + '})'
 
-    logging.info("tradingDRK(" + currency + "): " + str(mReturn))
+    logging.info("tradingDASH(" + currency + "): " + str(mReturn))
     return str(mReturn)
 
-def pullTradingPair(currency1='DRK', currency2='BTC'):
+def pullTradingPair(currency1='DASH', currency2='BTC'):
     url = ''
-    if (currency1 == 'DRK'):
+    if (currency1 == 'DASH'):
         if (currency2 == 'BTC'):
             url = TRADING_PAIR_URL_BTC_CRYPTSY
         elif (currency2 == 'LTC'):
@@ -157,13 +160,22 @@ def pullTradingPair(currency1='DRK', currency2='BTC'):
 
     # now we have the API data - let's parse it
     if not useBackupUrl:
-        if (currency1 == 'DRK' and currency2 in ['BTC', 'LTC']): # using cryptsy data
-            if (dataDict['return']['markets'][currency1]['label'] == currency1 + "/" + currency2):
-                dataDict = {'price': dataDict['return']['markets'][currency1]['lasttradeprice']}
+        if (currency1 == 'DASH' and currency2 in ['BTC', 'LTC']): # using cryptsy data
+
+            # Cryptsy may not have switched to DASH from DRK yet
+            dashData = None
+            try:
+                dashData = dataDict['return']['markets'][currency1]
+            except:
+                dashData = dataDict['return']['markets']['DRK']
+
+            if (dashData['label'] == currency1 + "/" + currency2):
+                dataDict = {'price': dashData['lasttradeprice']}
                 logging.info(currency1 + '_' + currency2 + ': ' + dataDict['price'])
             else:
                 logging.error('Cannot get trading pair for ' + currency1 + ' / ' + currency2)
                 return
+
         elif (currency1 == 'BTC' and currency2 in ['AUD', 'CNY', 'EUR', 'GBP', 'USD']): # using btcaverage data
             # standardize format of exchange rate data from different APIs (we will use 'price' as a key)
             dataDict['price'] = dataDict['last'] 
@@ -182,8 +194,8 @@ def pullTradingPair(currency1='DRK', currency2='BTC'):
 
 @bottle.route('/tasks/pull-cryptocoincharts-data')
 def pullCryptocoinchartsData():
-    pullTradingPair('DRK', 'BTC')
-    pullTradingPair('DRK', 'LTC')
+    pullTradingPair('DASH', 'BTC')
+    pullTradingPair('DASH', 'LTC')
     pullTradingPair('BTC', 'CNY')
     pullTradingPair('BTC', 'USD')
     pullTradingPair('BTC', 'EUR')
